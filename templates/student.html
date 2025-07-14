@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .dashboard {
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            background-color: #f0f4f8;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile {
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #0B1D51;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 5px solid #0B1D51;
+            border-radius: 4px;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout a {
+            text-decoration: none;
+            color: #fff;
+            background: #0B1D51;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .logout a:hover {
+            background-color: #092244;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="profile">
+        <h2>Welcome, {{ student_name }}</h2>
+        <p><strong>User ID:</strong> {{ userid }}</p>
+    </div>
+
+    <h3>📚 Your Study Materials</h3>
+    {% if materials %}
+    <ul>
+        {% for mat in materials %}
+        <li>
+            <strong>{{ mat[1] }}</strong> –
+            <a href="{{ mat[2] }}" target="_blank">Download</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No study materials available yet.</p>
+    {% endif %}
+
+    <div class="logout">
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>
