@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KS Academy | Coaching for SET, NET, TRB Exams</title>
+
+    <!-- CSS and Fonts -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playwrite+NL+Guides&family=Poetsen+One&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Top Banner -->
+    <div class="top-bar">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" height="70">
+        <h1>KS ACADEMY, SALEM</h1>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="/pgtrb">PG TRB</a>
+        <a href="#ugtrb">UG TRB</a>
+        <a href="#set">SET</a>
+        <a href="https://drive.google.com/file/d/1E7HlrokxYnzTpDjR-dZyaCUlSzdm8c07/view?usp=sharin"
+            target="_blank">Sample Materials</a>
+        <a href="/">HOME</a>
+        <a href="/login?role=admin">Admin Login</a>
+        <a href="/login?role=student">Student Login</a>
+        <a href="/about">About Us</a>
+        <a href="#contact">👤</a>
+    </nav>
+
+    <!-- Marquee -->
+    <div class="marquee-box">
+        <div class="marquee-content">
+            🎓 PG TRB BATCH-II ADMISSIONS GOING ON - 9047767620 &nbsp;&nbsp;&nbsp;
+            🎓 UG TRB-2025 ADMISSIONS GOING ON - 9042976707 &nbsp;&nbsp;&nbsp;
+            🎓 AP TRB ADMISSIONS GOING ON - 8148891005
+        </div>
+    </div>
+
+    <!-- Slip Test Banner -->
+    <div class="test-banner">
+        <a href="https://online-test.classplusapp.com/?testId=686f82a36c2509f5814a0afb&defaultLanguage=en"
+            target="_blank" class="blink-text">
+            CLICK HERE FOR FREE SLIP TEST
+        </a>
+    </div>
+
+    <!-- Achievers -->
+    <div class="achievers-section">
+        <img src="{{ url_for('static', filename='achievers-banner.png') }}" alt="Polytechnic TRB 2022 Achievers"
+            width="1000px" height="1000px" />
+    </div>
+
+    <!-- News Section -->
+    <section class="news-updates">
+        <div class="news-card">
+            <div class="news-date">27 <span>May, 2025</span></div>
+            <div class="news-content">
+                <h3>PG TRB -2025-2026 (Physics - New Syllabus -2024)</h3>
+                <p>Unit-6: Atomic Physics and Spectroscopy – Sample Material –
+                    <a href="#">Click Here</a>
+                </p>
+                <div class="news-meta">Posted by admin - <span class="tag">PG TRB</span></div>
+            </div>
+        </div>
+
+        <div class="news-card">
+            <div class="news-date">14 <span>March, 2025</span></div>
+            <div class="news-content">
+                <h3>ACHIEVEMENTS</h3>
+                <ul>
+                    <li>UG TRB (English & Tamil Medium) - 2024 – <a class="red" href="#">Click Here</a></li>
+                    <li>PG TRB - 2022 – ACHIEVERS – <a class="red" href="#">Click Here</a></li>
+                </ul>
+                <div class="news-meta">Posted by admin - <span class="tag">UG TRB</span></div>
+            </div>
+        </div>
+
+        <div class="news-card">
+            <div class="news-date">22 <span>November, 2024</span></div>
+            <div class="news-content">
+                <h3>PG TRB-2025</h3>
+                <p>Modulation Techniques Study Material - <a href="#">Click Here</a></p>
+                <div class="news-meta">Posted by admin - <span class="tag">PG TRB</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses -->
+    <section class="courses" id="courses">
+        <h2>Courses Offered</h2>
+        <div class="courses-grid">
+            <div class="course-card">📘 State Eligibility Test (SET) Coaching</div>
+            <div class="course-card">📕 PG TRB – Post Graduate Teacher Exam Coaching</div>
+            <div class="course-card">📙 UG TRB – Undergraduate Teacher Exam Coaching</div>
+        </div>
+    </section>
+
+    <!-- Batches -->
+    <section class="batches" id="batches">
+        <h2>Upcoming Batches</h2>
+        <p><strong>PG TRB 2025:</strong> Starts July 15 – Weekend & Evening Batch Available</p>
+        <p><strong>SET Nov 2025:</strong> Online classes start August 1</p>
+    </section>
+
+    <!-- Materials -->
+    <section class="courses" id="materials">
+        <h2>Sample Materials</h2>
+        <p>Downloadable notes and practice tests:
+            <a href="https://drive.google.com/file/d/1E7HlrokxYnzTpDjR-dZyaCUlSzdm8c07/view?usp=sharing"
+                target="_blank">Click here!!</a>
+        </p>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2>Contact Us</h2>
+        <p><strong>Email:</strong> ksacademysalem@gmail.com</p>
+        <p><strong>Phone:</strong> 9047767620, 9042976707, 8148891005</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 KS Academy. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
