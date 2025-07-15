@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 def get_db():
-    conn = sqlite3.connect('data.db')
+    conn = sqlite3.connect('data.db', check_same_thread=False)
     return conn
 
 @app.route('/')
@@ -23,11 +23,10 @@ def login():
             session['user'] = 'admin'
             return redirect('/admin')
         elif role == 'student':
-            con = get_db()
-            cur = con.cursor()
-            cur.execute("SELECT * FROM students WHERE userid=? AND password=?", (userid, password))
-            student = cur.fetchone()
-            con.close()
+            with get_db() as con:
+                cur = con.cursor()
+                cur.execute("SELECT * FROM students WHERE userid=? AND password=?", (userid, password))
+                student = cur.fetchone()
             if student:
                 session['user'] = student[2]
                 session['name'] = student[1]
@@ -44,15 +43,22 @@ def admin():
         name = request.form['name']
         userid = request.form['userid']
         password = request.form['password']
-        con = get_db()
-        con.execute("INSERT INTO students (name, userid, password) VALUES (?, ?, ?)", (name, userid, password))
-        con.commit()
-        con.close()
+        try:
+            with get_db() as con:
+                # Check for duplicate userid
+                cur = con.cursor()
+                cur.execute("SELECT COUNT(*) FROM students WHERE userid = ?", (userid,))
+                if cur.fetchone()[0] > 0:
+                    return "User ID already exists!"
+                con.execute("INSERT INTO students (name, userid, password) VALUES (?, ?, ?)", (name, userid, password))
+                con.commit()
+        except Exception as e:
+            return f"Error while adding student: {str(e)}"
 
-    con = get_db()
-    students = con.execute("SELECT * FROM students").fetchall()
-    materials = con.execute("SELECT * FROM materials").fetchall()
-    con.close()
+    with get_db() as con:
+        students = con.execute("SELECT * FROM students").fetchall()
+        materials = con.execute("SELECT * FROM materials").fetchall()
+
     return render_template("admin.html", students=students, materials=materials)
 
 @app.route('/delete_student', methods=['POST'])
@@ -61,10 +67,9 @@ def delete_student():
         return redirect('/login')
 
     userid = request.form['userid']
-    con = get_db()
-    con.execute("DELETE FROM students WHERE userid = ?", (userid,))
-    con.commit()
-    con.close()
+    with get_db() as con:
+        con.execute("DELETE FROM students WHERE userid = ?", (userid,))
+        con.commit()
     return redirect('/admin')
 
 @app.route('/add_material', methods=['POST'])
@@ -73,10 +78,12 @@ def add_material():
         return redirect('/login')
     title = request.form['title']
     link = request.form['link']
-    con = get_db()
-    con.execute("INSERT INTO materials (title, link) VALUES (?, ?)", (title, link))
-    con.commit()
-    con.close()
+    try:
+        with get_db() as con:
+            con.execute("INSERT INTO materials (title, link) VALUES (?, ?)", (title, link))
+            con.commit()
+    except Exception as e:
+        return f"Error while adding material: {str(e)}"
     return redirect('/admin')
 
 @app.route('/delete_material', methods=['POST'])
@@ -84,29 +91,26 @@ def delete_material():
     if session.get('user') != 'admin':
         return redirect('/login')
     material_id = request.form['material_id']
-    con = get_db()
-    con.execute("DELETE FROM materials WHERE id = ?", (material_id,))
-    con.commit()
-    con.close()
+    with get_db() as con:
+        con.execute("DELETE FROM materials WHERE id = ?", (material_id,))
+        con.commit()
     return redirect('/admin')
 
 @app.route('/student')
 def student():
     if not session.get('user') or session['user'] == 'admin':
         return redirect('/login')
-    
-    con = get_db()
-    materials = con.execute("SELECT * FROM materials").fetchall()
-    cur = con.cursor()
-    cur.execute("SELECT name FROM students WHERE userid = ?", (session['user'],))
-    student_data = cur.fetchone()
-    con.close()
 
-    return render_template("student.html", 
-                           student_name=student_data[0], 
-                           userid=session.get('user'), 
+    with get_db() as con:
+        materials = con.execute("SELECT * FROM materials").fetchall()
+        cur = con.cursor()
+        cur.execute("SELECT name FROM students WHERE userid = ?", (session['user'],))
+        student_data = cur.fetchone()
+
+    return render_template("student.html",
+                           student_name=student_data[0],
+                           userid=session.get('user'),
                            materials=materials)
-
 
 @app.route('/logout')
 def logout():
@@ -121,11 +125,8 @@ def about():
 def pgtrb():
     return render_template('pgtrb.html')
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
+# Keep only this app.run block
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
-
