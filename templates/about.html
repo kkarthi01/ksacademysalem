@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About KS Academy</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="top-bar">
-    <img src="logo.png" alt="KS Academy Logo" height="70">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" height="70">
     <h1>KS ACADEMY, SALEM</h1>
   </div>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a href="./templates/index.html">Home</a>
     <a href="about.html">About Us</a>
   </nav>
 
