@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
 
@@ -34,6 +35,7 @@ def login():
         return "Invalid login!"
     return render_template('login.html')
 
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if session.get('user') != 'admin':
@@ -43,23 +45,33 @@ def admin():
         name = request.form['name']
         userid = request.form['userid']
         password = request.form['password']
+        category = request.form['category']
         try:
             with get_db() as con:
-                # Check for duplicate userid
                 cur = con.cursor()
                 cur.execute("SELECT COUNT(*) FROM students WHERE userid = ?", (userid,))
                 if cur.fetchone()[0] > 0:
                     return "User ID already exists!"
-                con.execute("INSERT INTO students (name, userid, password) VALUES (?, ?, ?)", (name, userid, password))
+                con.execute("INSERT INTO students (name, userid, password, category) VALUES (?, ?, ?, ?)", 
+                            (name, userid, password, category))
                 con.commit()
         except Exception as e:
             return f"Error while adding student: {str(e)}"
 
     with get_db() as con:
-        students = con.execute("SELECT * FROM students").fetchall()
+        pgtrb = con.execute("SELECT * FROM students WHERE category = 'PG TRB'").fetchall()
+        ugtrb = con.execute("SELECT * FROM students WHERE category = 'UG TRB'").fetchall()
+        aptrb = con.execute("SELECT * FROM students WHERE category = 'AP TRB'").fetchall()
+        tnset = con.execute("SELECT * FROM students WHERE category = 'TNSET'").fetchall()
         materials = con.execute("SELECT * FROM materials").fetchall()
 
-    return render_template("admin.html", students=students, materials=materials)
+    return render_template("admin.html",
+        pgtrb=pgtrb,
+        ugtrb=ugtrb,
+        aptrb=aptrb,
+        tnset=tnset,
+        materials=materials)
+
 
 @app.route('/delete_student', methods=['POST'])
 def delete_student():
@@ -78,9 +90,10 @@ def add_material():
         return redirect('/login')
     title = request.form['title']
     link = request.form['link']
+    category = request.form['category']
     try:
         with get_db() as con:
-            con.execute("INSERT INTO materials (title, link) VALUES (?, ?)", (title, link))
+            con.execute("INSERT INTO materials (title, link, category) VALUES (?, ?, ?)", (title, link, category))
             con.commit()
     except Exception as e:
         return f"Error while adding material: {str(e)}"
@@ -102,13 +115,17 @@ def student():
         return redirect('/login')
 
     with get_db() as con:
-        materials = con.execute("SELECT * FROM materials").fetchall()
         cur = con.cursor()
-        cur.execute("SELECT name FROM students WHERE userid = ?", (session['user'],))
+        cur.execute("SELECT name, category FROM students WHERE userid = ?", (session['user'],))
         student_data = cur.fetchone()
 
+        if student_data:
+            materials = con.execute("SELECT * FROM materials WHERE category = ?", (student_data[1],)).fetchall()
+        else:
+            materials = []
+
     return render_template("student.html",
-                           student_name=student_data[0],
+                           student_name=student_data[0] if student_data else '',
                            userid=session.get('user'),
                            materials=materials)
 
@@ -125,7 +142,66 @@ def about():
 def pgtrb():
     return render_template('pgtrb.html')
 
-# Keep only this app.run block
+
+import pandas as pd
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'xlsx', 'xls', 'csv'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload_students', methods=['POST'])
+def upload_students():
+    if session.get('user') != 'admin':
+        return redirect('/login')
+
+    if 'file' not in request.files:
+        return "No file part"
+
+    file = request.files['file']
+    if file.filename == '':
+        return "No selected file"
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        # Read file using pandas
+        try:
+            if filename.endswith('.csv'):
+                df = pd.read_csv(filepath)
+            else:
+                df = pd.read_excel(filepath)
+
+            required_cols = {'name', 'userid', 'password', 'category'}
+            if not required_cols.issubset(set(df.columns)):
+                return "Excel file must contain: name, userid, password, category"
+
+            with get_db() as con:
+                cur = con.cursor()
+                added_count = 0
+                for _, row in df.iterrows():
+                    try:
+                        cur.execute("INSERT INTO students (name, userid, password, category) VALUES (?, ?, ?, ?)",
+                                    (row['name'], row['userid'], row['password'], row['category']))
+                        added_count += 1
+                    except sqlite3.IntegrityError:
+                        continue  # skip duplicates
+                con.commit()
+            return f"{added_count} students added successfully."
+        except Exception as e:
+            return f"Error processing file: {str(e)}"
+    else:
+        return "Unsupported file format"
+
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 5000))
