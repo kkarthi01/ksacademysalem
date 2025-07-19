@@ -52,85 +52,32 @@
         </div>
     </form>
 
-    <!-- Student Tables by Category -->
-    <h4 class="section-title">PG TRB Students</h4>
-    {% for student in pgtrb %}
-    {% if loop.first %}<div class="table-responsive mb-4"><table class="table table-bordered"><thead class="table-light">
-        <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr></thead><tbody>{% endif %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ student[1] }}</td>
-            <td>{{ student[2] }}</td>
-            <td>{{ student[3] }}</td>
-            <td>{{ student[4] }}</td>
-            <td>
-                <form method="POST" action="/delete_student">
-                    <input type="hidden" name="userid" value="{{ student[2] }}">
-                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
+    {% for category, students in [('PG TRB', pgtrb), ('UG TRB', ugtrb), ('AP TRB', aptrb), ('TNSET', tnset)] %}
+    <h4 class="section-title">{{ category }} Students</h4>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control student-search" placeholder="Search students..." onkeyup="filterStudents(this)">
+    </div>
+    {% for student in students %}
+    {% if loop.first %}<div class="table-responsive mb-4">
+    <table class="table table-bordered student-table">
+    <thead class="table-light">
+    <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr>
+    </thead><tbody>{% endif %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ student[1] }}</td>
+        <td>{{ student[2] }}</td>
+        <td>{{ student[3] }}</td>
+        <td>{{ student[4] }}</td>
+        <td>
+            <form method="POST" action="/delete_student">
+                <input type="hidden" name="userid" value="{{ student[2] }}">
+                <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+            </form>
+        </td>
+    </tr>
     {% if loop.last %}</tbody></table></div>{% endif %}
     {% endfor %}
-
-    <h4 class="section-title">UG TRB Students</h4>
-    {% for student in ugtrb %}
-    {% if loop.first %}<div class="table-responsive mb-4"><table class="table table-bordered"><thead class="table-light">
-        <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr></thead><tbody>{% endif %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ student[1] }}</td>
-            <td>{{ student[2] }}</td>
-            <td>{{ student[3] }}</td>
-            <td>{{ student[4] }}</td>
-            <td>
-                <form method="POST" action="/delete_student">
-                    <input type="hidden" name="userid" value="{{ student[2] }}">
-                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
-    {% if loop.last %}</tbody></table></div>{% endif %}
-    {% endfor %}
-
-    <h4 class="section-title">AP TRB Students</h4>
-    {% for student in aptrb %}
-    {% if loop.first %}<div class="table-responsive mb-4"><table class="table table-bordered"><thead class="table-light">
-        <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr></thead><tbody>{% endif %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ student[1] }}</td>
-            <td>{{ student[2] }}</td>
-            <td>{{ student[3] }}</td>
-            <td>{{ student[4] }}</td>
-            <td>
-                <form method="POST" action="/delete_student">
-                    <input type="hidden" name="userid" value="{{ student[2] }}">
-                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
-    {% if loop.last %}</tbody></table></div>{% endif %}
-    {% endfor %}
-
-    <h4 class="section-title">TNSET Students</h4>
-    {% for student in tnset %}
-    {% if loop.first %}<div class="table-responsive mb-4"><table class="table table-bordered"><thead class="table-light">
-        <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr></thead><tbody>{% endif %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ student[1] }}</td>
-            <td>{{ student[2] }}</td>
-            <td>{{ student[3] }}</td>
-            <td>{{ student[4] }}</td>
-            <td>
-                <form method="POST" action="/delete_student">
-                    <input type="hidden" name="userid" value="{{ student[2] }}">
-                    <button type="submit" class="btn btn-delete btn-sm">Delete</button>
-                </form>
-            </td>
-        </tr>
-    {% if loop.last %}</tbody></table></div>{% endif %}
     {% endfor %}
 
     <!-- Upload Study Material -->
@@ -192,6 +139,20 @@
         <a href="/logout" class="btn btn-secondary">Logout</a>
     </div>
 </div>
+
+<script>
+function filterStudents(input) {
+    const searchText = input.value.toLowerCase();
+    const table = input.closest('div').nextElementSibling.querySelector('.student-table');
+    const rows = table.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const name = row.cells[1].textContent.toLowerCase();
+        const userId = row.cells[2].textContent.toLowerCase();
+        row.style.display = name.includes(searchText) || userId.includes(searchText) ? '' : 'none';
+    });
+}
+</script>
 
 </body>
 </html>
