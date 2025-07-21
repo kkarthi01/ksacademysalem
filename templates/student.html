@@ -40,7 +40,7 @@
         }
 
         .logout {
-            text-align: center;
+            text-align: right;
             margin-top: 20px;
         }
 
@@ -61,8 +61,13 @@
 
 <div class="dashboard">
     <div class="profile">
-        <h2>Welcome, {{ student_name }}</h2>
-        <p><strong>User ID:</strong> {{ userid }}</p>
+        <div class="user-info">
+            <h2>Welcome, {{ student_name }}</h2>
+            <p><strong>User ID:</strong> {{ userid }}</p>
+        </div>
+        <div class="logout">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
     </div>
 
     <h3>📚 Your Study Materials</h3>
@@ -78,10 +83,7 @@
     {% else %}
         <p>No study materials available yet.</p>
     {% endif %}
-
-    <div class="logout">
-        <a href="{{ url_for('logout') }}">Logout</a>
-    </div>
+    
 </div>
 
 </body>
