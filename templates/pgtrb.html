@@ -1,64 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PG TRB Exam - Physics | KS Academy</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PG TRB Exam Coaching | KS Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --accent: #00d4ff;
+            --secondary: #ff6b35;
+            --text-dark: #1a1a2e;
+            --text-light: #f5f5f5;
+            --bg-light: #f8f9fa;
+            --border-color: rgba(0, 102, 204, 0.1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* ============================================
+           HEADER & NAVIGATION
+           ============================================ */
+
+        header {
+            background: linear-gradient(135deg, #1B3C53 0%, var(--primary) 100%);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 102, 204, 0.15);
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-section img {
+            height: 60px;
+            width: auto;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        header h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ============================================
+           MARQUEE
+           ============================================ */
+
+        .marquee-box {
+            overflow: hidden;
+            background: linear-gradient(90deg, rgba(0, 102, 204, 0.05), rgba(255, 107, 53, 0.05));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 3rem;
+            animation: slideText 20s linear infinite;
+            padding: 1rem 0;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .marquee-item {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            animation: slideInUp 0.6s ease-out;
+            text-align: center;
+        }
+
+        .hero-section h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-section h4 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.4);
+        }
+
+        /* ============================================
+           FEATURES SECTION
+           ============================================ */
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .section-underline {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+        }
+
+        .features-list li {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .features-list li:hover {
+            transform: translateX(8px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
+        }
+
+        .features-list li::before {
+            content: '✓';
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           HIGHLIGHTS
+           ============================================ */
+
+        .highlight-text {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        /* ============================================
+           TEST BANNER
+           ============================================ */
+
+        .test-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.3);
+            animation: slideInUp 0.6s ease-out 0.3s both;
+        }
+
+        .test-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .test-banner a {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .test-banner a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+
+        footer {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #1a2332 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .hero-section {
+                padding: 1.5rem;
+            }
+
+            .hero-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .features-list li {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
 <body>
 
-  <div class="top-bar">
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" height="70">
-    <h1>KS ACADEMY</h1>
-  </div>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo">
+                <h1>KS ACADEMY</h1>
+            </div>
+            <nav>
+                <a href="/">🏠 Home</a>
+                <a href="/#courses">📚 Courses</a>
+                <a href="/#contact">📞 Contact</a>
+                <a href="/login?role=student">🔐 Login</a>
+            </nav>
+        </div>
+    </header>
 
-  <nav>
-    <a href="pgtrb.html">PG TRB</a>
-    <a href="ugtrb.html">UG TRB</a>
-    <a href="set.html">SET</a>
-    <a href="net.html">NET</a>
-    <a href="index.html#materials">Sample Materials</a>
-    <a href="index.html#home">HOME</a>
-    <a href="about.html">About Us</a>
-    <a href="index.html#contact">👤</a>
-  </nav>
-
-  <div class="marquee-box">
-    <div class="marquee-content">
-      🧪 PG TRB - 2025 NEW ONLINE CLASS BATCH - IV, NEW DIRECT CLASS BATCH - III ADMISSION OPEN, Contact Mobile Number - 9361561415
+    <!-- Marquee -->
+    <div class="marquee-box">
+        <div class="marquee-content">
+            <span class="marquee-item">🎓 PG TRB - 2025 NEW ONLINE CLASS BATCH ADMISSION OPEN</span>
+            <span class="marquee-item">📞 Contact: 9361561415</span>
+            <span class="marquee-item">🎓 PG TRB - 2025 NEW ONLINE CLASS BATCH ADMISSION OPEN</span>
+        </div>
     </div>
-  </div>
 
-  <div class="online-test-banner">
-    ONLINE TEST - CLICK HERE
-  </div>
+    <!-- Main Container -->
+    <div class="container">
 
-  <div class="pgtrb-wrapper">
-    <div class="pgtrb-box">
-      <h2>PG TRB EXAM - PHYSICS</h2>
-      <h4>For the post of Post Graduate Assistant</h4>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2>🧪 PG TRB Exam Coaching</h2>
+            <h4>Post Graduate Teacher Recruitment Board Examination</h4>
+            <p class="hero-description">
+                Comprehensive preparation program for the PG TRB exam with expert faculty, extensive study materials, and regular assessments to ensure your success.
+            </p>
+            <a href="/login?role=student" class="cta-button">Enroll Now →</a>
+        </section>
 
-      <p class="highlight-text">
-        We care and concern to give you the best in every step since we hold the responsibility for the most important step in your life. So what we bring to you here?
-      </p>
+        <!-- Highlights -->
+        <section class="highlight-text">
+            <strong>🎯 Why Choose KS Academy?</strong><br>
+            We care and are committed to giving you the best in every step since we hold the responsibility for the most important step in your life. Our proven methodology and expert guidance have helped hundreds of students succeed in their PG TRB examinations.
+        </section>
 
-      <ul>
-        <li>✔️ Excellent Materials provided.</li>
-        <li>✔️ Every unit consists of two half unit tests with 50 questions each, one problems test of 50 questions and one full unit test of 150.</li>
-        <li>✔️ Regular test paper with answering and discussion sessions shall be held.</li>
-        <li>✔️ Finally four half portion test and five full portion test will be conducted.</li>
-        <li>✔️ Mathematical physics shall be handled by well-versed mathematicians.</li>
-        <li>✔️ Electronics units shall be handled by enthusiastic professors of great knowledge over electronics department.</li>
-        <li>✔️ Educational Methodology and General Knowledge shall be handled by expert.</li>
-        <li>✔️ Class timings: 9.30am – 5.00pm on Saturdays, Sundays and Government holidays.</li>
-      </ul>
+        <!-- Online Test Banner -->
+        <div class="test-banner">
+            <h3>Take Your Free Practice Test</h3>
+            <p>Assess your preparation level with our comprehensive online test</p>
+            <a href="https://online-test.classplusapp.com/?testId=686f82a36c2509f5814a0afb&defaultLanguage=en" target="_blank">
+                📋 Start Free Test
+            </a>
+        </div>
+
+        <!-- Features Section -->
+        <section>
+            <div class="section-header">
+                <h3>Our Comprehensive Program</h3>
+                <div class="section-underline"></div>
+            </div>
+
+            <ul class="features-list">
+                <li>Excellent study materials covering all topics and units</li>
+                <li>Half-unit tests (50 questions) and problem-solving tests</li>
+                <li>Full unit tests (150 questions) for comprehensive practice</li>
+                <li>Regular test papers with detailed discussion sessions</li>
+                <li>Four half-portion and five full-portion mock exams</li>
+                <li>Mathematical Physics handled by expert mathematicians</li>
+                <li>Electronics units taught by specialized professors</li>
+                <li>Educational Methodology and General Knowledge modules</li>
+                <li>Flexible class timings: Saturdays, Sundays & Government holidays</li>
+                <li>Personalized guidance and doubt-clearing sessions</li>
+                <li>Online and offline class options available</li>
+                <li>Lifetime access to study materials and recorded lectures</li>
+            </ul>
+        </section>
+
+        <!-- Class Schedule -->
+        <section>
+            <div class="section-header">
+                <h3>Class Schedule</h3>
+                <div class="section-underline"></div>
+            </div>
+
+            <div class="highlight-text">
+                <strong>📅 Regular Classes</strong><br>
+                <strong>Time:</strong> 9:30 AM – 5:00 PM<br>
+                <strong>Days:</strong> Saturdays, Sundays & Government Holidays<br>
+                <strong>Batch Start:</strong> July 15, 2025<br>
+                <strong>Mode:</strong> Classroom + Online
+            </div>
+        </section>
+
     </div>
-  </div>
 
-  <footer>
-    <p>&copy; 2025 KS Academy. All rights reserved.</p>
-  </footer>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 KS Academy. All rights reserved. | Excellence in Exam Preparation</p>
+    </footer>
+
 </body>
 </html>

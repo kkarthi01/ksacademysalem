@@ -1,6 +1,6 @@
-
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 import sqlite3
+import json
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -51,12 +51,15 @@ def admin():
                 cur = con.cursor()
                 cur.execute("SELECT COUNT(*) FROM students WHERE userid = ?", (userid,))
                 if cur.fetchone()[0] > 0:
-                    return "User ID already exists!"
+                    flash("User ID already exists!", "danger")
+                    return redirect('/admin')
                 con.execute("INSERT INTO students (name, userid, password, category) VALUES (?, ?, ?, ?)", 
                             (name, userid, password, category))
                 con.commit()
+                flash("Student added successfully!", "success")
         except Exception as e:
-            return f"Error while adding student: {str(e)}"
+            flash(f"Error while adding student: {str(e)}", "danger")
+            return redirect('/admin')
 
     with get_db() as con:
         pgtrb = con.execute("SELECT * FROM students WHERE category = 'PG TRB'").fetchall()
@@ -82,7 +85,48 @@ def delete_student():
     with get_db() as con:
         con.execute("DELETE FROM students WHERE userid = ?", (userid,))
         con.commit()
+    flash("Student deleted successfully!", "success")
     return redirect('/admin')
+
+
+# ============================================
+# BULK DELETE STUDENTS - NEW ROUTE
+# ============================================
+@app.route('/bulk_delete_students', methods=['POST'])
+def bulk_delete_students():
+    if session.get('user') != 'admin':
+        return redirect('/login')
+    
+    try:
+        # Get the JSON string from form data
+        userids_json = request.form.get('userids')
+        
+        if not userids_json:
+            flash('No students selected', 'danger')
+            return redirect('/admin')
+        
+        # Parse JSON array
+        userids = json.loads(userids_json)
+        
+        if not userids:
+            flash('No students selected', 'danger')
+            return redirect('/admin')
+        
+        # Delete students
+        with get_db() as con:
+            deleted_count = 0
+            for userid in userids:
+                cur = con.execute("DELETE FROM students WHERE userid = ?", (userid,))
+                deleted_count += cur.rowcount
+            con.commit()
+        
+        flash(f'Successfully deleted {deleted_count} student(s)', 'success')
+        
+    except Exception as e:
+        flash(f'Error deleting students: {str(e)}', 'danger')
+    
+    return redirect('/admin')
+
 
 @app.route('/add_material', methods=['POST'])
 def add_material():
@@ -95,8 +139,9 @@ def add_material():
         with get_db() as con:
             con.execute("INSERT INTO materials (title, link, category) VALUES (?, ?, ?)", (title, link, category))
             con.commit()
+        flash("Material added successfully!", "success")
     except Exception as e:
-        return f"Error while adding material: {str(e)}"
+        flash(f"Error while adding material: {str(e)}", "danger")
     return redirect('/admin')
 
 @app.route('/delete_material', methods=['POST'])
@@ -107,7 +152,48 @@ def delete_material():
     with get_db() as con:
         con.execute("DELETE FROM materials WHERE id = ?", (material_id,))
         con.commit()
+    flash("Material deleted successfully!", "success")
     return redirect('/admin')
+
+
+# ============================================
+# BULK DELETE MATERIALS - NEW ROUTE
+# ============================================
+@app.route('/bulk_delete_materials', methods=['POST'])
+def bulk_delete_materials():
+    if session.get('user') != 'admin':
+        return redirect('/login')
+    
+    try:
+        # Get the JSON string from form data
+        material_ids_json = request.form.get('material_ids')
+        
+        if not material_ids_json:
+            flash('No materials selected', 'danger')
+            return redirect('/admin')
+        
+        # Parse JSON array
+        material_ids = json.loads(material_ids_json)
+        
+        if not material_ids:
+            flash('No materials selected', 'danger')
+            return redirect('/admin')
+        
+        # Delete materials
+        with get_db() as con:
+            deleted_count = 0
+            for material_id in material_ids:
+                cur = con.execute("DELETE FROM materials WHERE id = ?", (material_id,))
+                deleted_count += cur.rowcount
+            con.commit()
+        
+        flash(f'Successfully deleted {deleted_count} material(s)', 'success')
+        
+    except Exception as e:
+        flash(f'Error deleting materials: {str(e)}', 'danger')
+    
+    return redirect('/admin')
+
 
 @app.route('/student')
 def student():
@@ -163,11 +249,13 @@ def upload_students():
         return redirect('/login')
 
     if 'file' not in request.files:
-        return "No file part"
+        flash("No file part", "danger")
+        return redirect('/admin')
 
     file = request.files['file']
     if file.filename == '':
-        return "No selected file"
+        flash("No selected file", "danger")
+        return redirect('/admin')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -183,24 +271,35 @@ def upload_students():
 
             required_cols = {'name', 'userid', 'password', 'category'}
             if not required_cols.issubset(set(df.columns)):
-                return "Excel file must contain: name, userid, password, category"
+                flash("Excel file must contain: name, userid, password, category", "danger")
+                return redirect('/admin')
 
             with get_db() as con:
                 cur = con.cursor()
                 added_count = 0
+                skipped_count = 0
                 for _, row in df.iterrows():
                     try:
                         cur.execute("INSERT INTO students (name, userid, password, category) VALUES (?, ?, ?, ?)",
                                     (row['name'], row['userid'], row['password'], row['category']))
                         added_count += 1
                     except sqlite3.IntegrityError:
+                        skipped_count += 1
                         continue  # skip duplicates
                 con.commit()
-            return f"{added_count} students added successfully."
+            
+            message = f"{added_count} students added successfully."
+            if skipped_count > 0:
+                message += f" ({skipped_count} duplicates skipped)"
+            flash(message, "success")
+            
         except Exception as e:
-            return f"Error processing file: {str(e)}"
+            flash(f"Error processing file: {str(e)}", "danger")
+            return redirect('/admin')
     else:
-        return "Unsupported file format"
+        flash("Unsupported file format", "danger")
+    
+    return redirect('/admin')
 
 if __name__ == '__main__':
     import os

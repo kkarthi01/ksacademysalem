@@ -2,157 +2,1233 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel | KS Academy</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | KS Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; padding: 2rem; }
-        .section-title { color: #0B1D51; margin-top: 2rem; }
-        .btn-delete { background-color: #0B1D51; color: white; }
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary: #ff6b35;
+            --accent: #00d4ff;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --text-dark: #1a1a2e;
+            --text-light: #f5f5f5;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --border-color: rgba(0, 102, 204, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ============================================
+           HEADER & NAVIGATION
+           ============================================ */
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 102, 204, 0.15);
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ============================================
+           SECTION STYLES
+           ============================================ */
+
+        .admin-section {
+            background: var(--bg-white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            animation: slideInUp 0.6s ease-out;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .section-underline {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================
+           FORMS
+           ============================================ */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-light);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #27ae60);
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #e67e22);
+            color: white;
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            color: white;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ============================================
+           TABLES
+           ============================================ */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 212, 255, 0.05));
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 102, 204, 0.03);
+        }
+
+        tbody tr.selected {
+            background: rgba(0, 102, 204, 0.08);
+        }
+
+        /* ============================================
+           CHECKBOXES
+           ============================================ */
+
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        /* ============================================
+           BULK ACTIONS BAR
+           ============================================ */
+
+        .bulk-actions-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0, 102, 204, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .bulk-actions-bar.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .bulk-count {
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding-right: 1rem;
+            border-right: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .bulk-actions-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .bulk-actions-buttons .btn {
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .bulk-actions-buttons .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ============================================
+           SEARCH & FILTERS
+           ============================================ */
+
+        .search-filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-light);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* ============================================
+           STATS CARDS
+           ============================================ */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 212, 255, 0.05));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
+            border-color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ============================================
+           MODALS & ALERTS
+           ============================================ */
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            animation: slideInDown 0.4s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: #27ae60;
+        }
+
+        .alert-danger {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #c0392b;
+        }
+
+        .alert-info {
+            background: rgba(0, 102, 204, 0.1);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+            color: var(--primary);
+        }
+
+        /* ============================================
+           BADGE
+           ============================================ */
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.2), rgba(0, 212, 255, 0.2));
+            color: var(--primary);
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ============================================
+           EXPORT BUTTONS
+           ============================================ */
+
+        .export-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+        }
+
+        .btn-export:hover {
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* ============================================
+           PASSWORD TOGGLE
+           ============================================ */
+
+        .password-toggle {
+            cursor: pointer;
+            user-select: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .password-toggle:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .admin-section {
+                padding: 1.5rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.8rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .bulk-actions-bar {
+                flex-direction: column;
+                padding: 1rem;
+                border-radius: 12px;
+                width: 90%;
+            }
+
+            .bulk-count {
+                border-right: none;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+                padding-bottom: 0.8rem;
+                padding-right: 0;
+            }
+
+            .bulk-actions-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .bulk-actions-buttons .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 class="text-center mb-4">Admin Dashboard – KS Academy</h2>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div>
+                <h1>🎓 Admin Dashboard</h1>
+                <p class="header-subtitle">KS Academy - Complete Management System</p>
+            </div>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </header>
 
-    <!-- Excel Upload -->
-    <h4 class="section-title">Upload Students (Excel)</h4>
-    <form method="POST" action="/upload_students" enctype="multipart/form-data" class="row g-3 mb-4">
-        <div class="col-md-6">
-            <input type="file" class="form-control" name="file" accept=".csv, .xlsx" required>
-        </div>
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-warning">Upload Students</button>
-        </div>
-    </form>
+    <!-- Main Container -->
+    <div class="container">
 
-    <!-- Add Student Form -->
-    <h4 class="section-title">Add Student</h4>
-    <form method="POST" action="/admin" class="row g-3 mb-4">
-        <div class="col-md-3">
-            <input type="text" class="form-control" name="name" placeholder="Name" required>
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" name="userid" placeholder="User ID" required>
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" name="password" placeholder="Password" required>
-        </div>
-        <div class="col-md-3">
-            <select name="category" class="form-select" required>
-                <option value="">Select Category</option>
-                <option value="PG TRB">PG TRB</option>
-                <option value="UG TRB">UG TRB</option>
-                <option value="AP TRB">AP TRB</option>
-                <option value="TNSET">TNSET</option>
-            </select>
-        </div>
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary">Add Student</button>
-        </div>
-    </form>
+        <!-- Statistics Section -->
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">📊</span>
+                Quick Stats
+            </div>
+            <div class="section-underline"></div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">PG TRB Students</div>
+                    <div class="stat-value">{{ pgtrb|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">UG TRB Students</div>
+                    <div class="stat-value">{{ ugtrb|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">AP TRB Students</div>
+                    <div class="stat-value">{{ aptrb|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">TNSET Students</div>
+                    <div class="stat-value">{{ tnset|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Students</div>
+                    <div class="stat-value">{{ pgtrb|length + ugtrb|length + aptrb|length + tnset|length }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Materials</div>
+                    <div class="stat-value">{{ materials|length }}</div>
+                </div>
+            </div>
+        </section>
 
-    {% for category, students in [('PG TRB', pgtrb), ('UG TRB', ugtrb), ('AP TRB', aptrb), ('TNSET', tnset)] %}
-    <h4 class="section-title">{{ category }} Students</h4>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control student-search" placeholder="Search students..." onkeyup="filterStudents(this)">
-    </div>
-    {% for student in students %}
-    {% if loop.first %}<div class="table-responsive mb-4">
-    <table class="table table-bordered student-table">
-    <thead class="table-light">
-    <tr><th>S.No.</th><th>Name</th><th>User ID</th><th>Password</th><th>Category</th><th>Action</th></tr>
-    </thead><tbody>{% endif %}
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ student[1] }}</td>
-        <td>{{ student[2] }}</td>
-        <td>{{ student[3] }}</td>
-        <td>{{ student[4] }}</td>
-        <td>
-            <form method="POST" action="/delete_student">
-                <input type="hidden" name="userid" value="{{ student[2] }}">
-                <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+        <!-- Upload Students Section -->
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">📤</span>
+                Bulk Upload Students
+            </div>
+            <div class="section-underline"></div>
+            <form method="POST" action="/upload_students" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="file">Select Excel File (CSV or XLSX)</label>
+                        <input type="file" id="file" name="file" accept=".csv, .xlsx" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-warning">
+                        <span>📊</span>
+                        Upload Students
+                    </button>
+                </div>
             </form>
-        </td>
-    </tr>
-    {% if loop.last %}</tbody></table></div>{% endif %}
-    {% endfor %}
-    {% endfor %}
+            <div class="alert alert-info" style="margin-top: 1rem;">
+                <strong>📝 Format:</strong> Excel file should have columns: Name, User ID, Password, Category
+            </div>
+        </section>
 
-    <!-- Upload Study Material -->
-    <h4 class="section-title">Upload Material</h4>
-    <form method="POST" action="/add_material" class="row g-3 mb-4">
-        <div class="col-md-4">
-            <input type="text" class="form-control" name="title" placeholder="Title" required>
-        </div>
-        <div class="col-md-4">
-            <input type="url" class="form-control" name="link" placeholder="Material Link" required>
-        </div>
-        <div class="col-md-4">
-            <select name="category" class="form-select" required>
-                <option value="">Select Category</option>
-                <option value="PG TRB">PG TRB</option>
-                <option value="UG TRB">UG TRB</option>
-                <option value="AP TRB">AP TRB</option>
-                <option value="TNSET">TNSET</option>
-            </select>
-        </div>
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-success">Add Material</button>
-        </div>
-    </form>
+        <!-- Add Student Section -->
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">➕</span>
+                Add Single Student
+            </div>
+            <div class="section-underline"></div>
+            <form method="POST" action="/admin">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Student Name</label>
+                        <input type="text" id="name" name="name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userid">User ID</label>
+                        <input type="text" id="userid" name="userid" placeholder="Unique User ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Secure Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="PG TRB">PG TRB</option>
+                            <option value="UG TRB">UG TRB</option>
+                            <option value="AP TRB">AP TRB</option>
+                            <option value="TNSET">TNSET</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span>✅</span>
+                        Add Student
+                    </button>
+                </div>
+            </form>
+        </section>
 
-    <!-- Study Materials Table -->
-    <h4 class="section-title">Study Materials</h4>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>S.No.</th>
-                    <th>Title</th>
-                    <th>Link</th>
-                    <th>Category</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for material in materials %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ material[1] }}</td>
-                    <td><a href="{{ material[2] }}" target="_blank">{{ material[2] }}</a></td>
-                    <td>{{ material[3] }}</td>
-                    <td>
-                        <form method="POST" action="/delete_material">
-                            <input type="hidden" name="material_id" value="{{ material[0] }}">
-                            <button type="submit" class="btn btn-delete btn-sm">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Students Tables Section -->
+        {% for category, students in [('PG TRB', pgtrb), ('UG TRB', ugtrb), ('AP TRB', aptrb), ('TNSET', tnset)] %}
+        {% if students %}
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">👥</span>
+                {{ category }} Students ({{ students|length }})
+            </div>
+            <div class="section-underline"></div>
+            
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        class="student-search" 
+                        placeholder="🔍 Search by name or user ID..." 
+                        onkeyup="filterTable(this, '{{ category }}-table')"
+                    >
+                </div>
+                <div class="export-buttons">
+                    <button class="btn btn-export btn-sm" onclick="exportTableToCSV('{{ category }}-table', '{{ category }}_students.csv')">
+                        📥 Export CSV
+                    </button>
+                    <button class="btn btn-export btn-sm" onclick="printTable('{{ category }}-table')">
+                        🖨️ Print
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="{{ category }}-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, '{{ category }}')">
+                            </th>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>User ID</th>
+                            <th>Password</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="student-checkbox" data-userid="{{ student[2] }}" data-category="{{ category }}" onchange="updateBulkActions()">
+                            </td>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ student[1] }}</td>
+                            <td><code>{{ student[2] }}</code></td>
+                            <td>
+                                <code class="password-field" data-password="{{ student[3] }}">••••••••</code>
+                                <span class="password-toggle" onclick="togglePassword(this)">👁️ Show</span>
+                            </td>
+                            <td><span class="badge">{{ student[4] }}</span></td>
+                            <td>
+                                <form method="POST" action="/delete_student" style="display: inline;">
+                                    <input type="hidden" name="userid" value="{{ student[2] }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this student?')">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Add Material Section -->
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">📚</span>
+                Add Study Material
+            </div>
+            <div class="section-underline"></div>
+            <form method="POST" action="/add_material">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Material Title</label>
+                        <input type="text" id="title" name="title" placeholder="e.g., Unit-1: Mechanics" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="link">Material Link</label>
+                        <input type="url" id="link" name="link" placeholder="https://drive.google.com/..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="material-category">Category</label>
+                        <select id="material-category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="PG TRB">PG TRB</option>
+                            <option value="UG TRB">UG TRB</option>
+                            <option value="AP TRB">AP TRB</option>
+                            <option value="TNSET">TNSET</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">
+                        <span>➕</span>
+                        Add Material
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Materials Table Section -->
+        <section class="admin-section">
+            <div class="section-title">
+                <span class="section-icon">📖</span>
+                Study Materials ({{ materials|length }})
+            </div>
+            <div class="section-underline"></div>
+
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        class="material-search" 
+                        placeholder="🔍 Search materials..."
+                        onkeyup="filterTable(this, 'materials-table')"
+                    >
+                </div>
+                <div class="export-buttons">
+                    <button class="btn btn-export btn-sm" onclick="exportTableToCSV('materials-table', 'study_materials.csv')">
+                        📥 Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="materials-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">
+                                <input type="checkbox" class="select-all-materials" onchange="toggleSelectAllMaterials(this)">
+                            </th>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Link</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in materials %}
+                        <tr>
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="material-checkbox" data-materialid="{{ material[0] }}" onchange="updateMaterialBulkActions()">
+                            </td>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ material[1] }}</td>
+                            <td><a href="{{ material[2] }}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">View →</a></td>
+                            <td><span class="badge">{{ material[3] }}</span></td>
+                            <td>
+                                <form method="POST" action="/delete_material" style="display: inline;">
+                                    <input type="hidden" name="material_id" value="{{ material[0] }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this material?')">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
     </div>
 
-    <div class="text-center mt-4">
-        <a href="/logout" class="btn btn-secondary">Logout</a>
+    <!-- Bulk Actions Bar for Students -->
+    <div class="bulk-actions-bar" id="bulkActionsBar">
+        <div class="bulk-count">
+            <span id="selectedCount">0</span> selected
+        </div>
+        <div class="bulk-actions-buttons">
+            <button class="btn" onclick="clearSelection()">
+                ✖️ Clear
+            </button>
+            <button class="btn" onclick="bulkDeleteStudents()">
+                🗑️ Delete Selected
+            </button>
+            <button class="btn" onclick="bulkExportStudents()">
+                📥 Export Selected
+            </button>
+        </div>
     </div>
-</div>
 
-<script>
-function filterStudents(input) {
-    const searchText = input.value.toLowerCase();
-    const table = input.closest('div').nextElementSibling.querySelector('.student-table');
-    const rows = table.querySelectorAll('tbody tr');
+    <!-- Bulk Actions Bar for Materials -->
+    <div class="bulk-actions-bar" id="materialBulkActionsBar">
+        <div class="bulk-count">
+            <span id="selectedMaterialCount">0</span> selected
+        </div>
+        <div class="bulk-actions-buttons">
+            <button class="btn" onclick="clearMaterialSelection()">
+                ✖️ Clear
+            </button>
+            <button class="btn" onclick="bulkDeleteMaterials()">
+                🗑️ Delete Selected
+            </button>
+        </div>
+    </div>
 
-    rows.forEach(row => {
-        const name = row.cells[1].textContent.toLowerCase();
-        const userId = row.cells[2].textContent.toLowerCase();
-        row.style.display = name.includes(searchText) || userId.includes(searchText) ? '' : 'none';
-    });
-}
-</script>
+    <!-- Scripts -->
+    <script>
+        // Filter table function
+        function filterTable(input, tableId) {
+            const searchText = input.value.toLowerCase();
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+        }
+
+        // Toggle select all checkboxes
+        function toggleSelectAll(checkbox, category) {
+            const checkboxes = document.querySelectorAll(`input[data-category="${category}"]`);
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+                if (cb.checked) {
+                    cb.closest('tr').classList.add('selected');
+                } else {
+                    cb.closest('tr').classList.remove('selected');
+                }
+            });
+            updateBulkActions();
+        }
+
+        // Update bulk actions bar
+        function updateBulkActions() {
+            const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
+            const count = selectedCheckboxes.length;
+            const bulkBar = document.getElementById('bulkActionsBar');
+            const countElement = document.getElementById('selectedCount');
+            
+            countElement.textContent = count;
+            
+            if (count > 0) {
+                bulkBar.classList.add('show');
+            } else {
+                bulkBar.classList.remove('show');
+            }
+
+            // Update row highlighting
+            document.querySelectorAll('.student-checkbox').forEach(cb => {
+                if (cb.checked) {
+                    cb.closest('tr').classList.add('selected');
+                } else {
+                    cb.closest('tr').classList.remove('selected');
+                }
+            });
+        }
+
+        // Clear selection
+        function clearSelection() {
+            document.querySelectorAll('.student-checkbox').forEach(cb => {
+                cb.checked = false;
+                cb.closest('tr').classList.remove('selected');
+            });
+            document.querySelectorAll('.select-all-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            updateBulkActions();
+        }
+
+        // Bulk delete students
+        function bulkDeleteStudents() {
+            const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
+            const userIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.userid);
+            
+            if (userIds.length === 0) {
+                alert('No students selected');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete ${userIds.length} student(s)?`)) {
+                // Create form and submit
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/bulk_delete_students';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'userids';
+                input.value = JSON.stringify(userIds);
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Bulk export students
+        function bulkExportStudents() {
+            const selectedCheckboxes = document.querySelectorAll('.student-checkbox:checked');
+            
+            if (selectedCheckboxes.length === 0) {
+                alert('No students selected');
+                return;
+            }
+            
+            let csvContent = "Name,User ID,Password,Category\n";
+            
+            selectedCheckboxes.forEach(cb => {
+                const row = cb.closest('tr');
+                const cells = row.querySelectorAll('td');
+                const name = cells[2].textContent.trim();
+                const userid = cells[3].textContent.trim();
+                const password = cells[4].querySelector('.password-field').dataset.password;
+                const category = cells[5].textContent.trim();
+                
+                csvContent += `"${name}","${userid}","${password}","${category}"\n`;
+            });
+            
+            downloadCSV(csvContent, 'selected_students.csv');
+        }
+
+        // Toggle password visibility
+        function togglePassword(element) {
+            const passwordField = element.previousElementSibling;
+            const actualPassword = passwordField.dataset.password;
+            
+            if (passwordField.textContent === '••••••••') {
+                passwordField.textContent = actualPassword;
+                element.textContent = '🙈 Hide';
+            } else {
+                passwordField.textContent = '••••••••';
+                element.textContent = '👁️ Show';
+            }
+        }
+
+        // Export table to CSV
+        function exportTableToCSV(tableId, filename) {
+            const table = document.getElementById(tableId);
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            
+            for (let i = 0; i < rows.length; i++) {
+                const row = [], cols = rows[i].querySelectorAll('td, th');
+                
+                for (let j = 1; j < cols.length - 1; j++) { // Skip checkbox and action columns
+                    let text = cols[j].textContent.trim();
+                    // Handle password fields
+                    const passwordField = cols[j].querySelector('.password-field');
+                    if (passwordField) {
+                        text = passwordField.dataset.password;
+                    }
+                    row.push('"' + text.replace(/"/g, '""') + '"');
+                }
+                
+                csv.push(row.join(','));
+            }
+            
+            downloadCSV(csv.join('\n'), filename);
+        }
+
+        // Download CSV helper
+        function downloadCSV(csv, filename) {
+            const csvFile = new Blob([csv], { type: 'text/csv' });
+            const downloadLink = document.createElement('a');
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        // Print table
+        function printTable(tableId) {
+            const table = document.getElementById(tableId).cloneNode(true);
+            
+            // Remove checkboxes and action columns
+            table.querySelectorAll('.checkbox-cell').forEach(cell => cell.remove());
+            table.querySelectorAll('th:last-child, td:last-child').forEach(cell => cell.remove());
+            
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print</title>');
+            printWindow.document.write('<style>body{font-family:Arial,sans-serif;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #ddd;padding:8px;text-align:left;} th{background-color:#f2f2f2;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(table.outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Material bulk actions
+        function toggleSelectAllMaterials(checkbox) {
+            const checkboxes = document.querySelectorAll('.material-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+                if (cb.checked) {
+                    cb.closest('tr').classList.add('selected');
+                } else {
+                    cb.closest('tr').classList.remove('selected');
+                }
+            });
+            updateMaterialBulkActions();
+        }
+
+        function updateMaterialBulkActions() {
+            const selectedCheckboxes = document.querySelectorAll('.material-checkbox:checked');
+            const count = selectedCheckboxes.length;
+            const bulkBar = document.getElementById('materialBulkActionsBar');
+            const countElement = document.getElementById('selectedMaterialCount');
+            
+            countElement.textContent = count;
+            
+            if (count > 0) {
+                bulkBar.classList.add('show');
+            } else {
+                bulkBar.classList.remove('show');
+            }
+
+            document.querySelectorAll('.material-checkbox').forEach(cb => {
+                if (cb.checked) {
+                    cb.closest('tr').classList.add('selected');
+                } else {
+                    cb.closest('tr').classList.remove('selected');
+                }
+            });
+        }
+
+        function clearMaterialSelection() {
+            document.querySelectorAll('.material-checkbox').forEach(cb => {
+                cb.checked = false;
+                cb.closest('tr').classList.remove('selected');
+            });
+            document.querySelectorAll('.select-all-materials').forEach(cb => {
+                cb.checked = false;
+            });
+            updateMaterialBulkActions();
+        }
+
+        function bulkDeleteMaterials() {
+            const selectedCheckboxes = document.querySelectorAll('.material-checkbox:checked');
+            const materialIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.materialid);
+            
+            if (materialIds.length === 0) {
+                alert('No materials selected');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete ${materialIds.length} material(s)?`)) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/bulk_delete_materials';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'material_ids';
+                input.value = JSON.stringify(materialIds);
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 
 </body>
 </html>

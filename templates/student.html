@@ -2,89 +2,494 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | KS Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .dashboard {
-            max-width: 800px;
-            margin: auto;
-            padding: 2rem;
-            background-color: #f0f4f8;
-            border-radius: 10px;
-            font-family: Arial, sans-serif;
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary: #ff6b35;
+            --accent: #00d4ff;
+            --success: #2ecc71;
+            --text-dark: #1a1a2e;
+            --text-light: #f5f5f5;
+            --bg-light: #f8f9fa;
+            --border-color: rgba(0, 102, 204, 0.1);
         }
 
-        .profile {
-            background-color: #ffffff;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h2, h3 {
-            color: #0B1D51;
-        }
-
-        ul {
-            list-style-type: none;
+        * {
+            margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        li {
-            background: #fff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 5px solid #0B1D51;
-            border-radius: 4px;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .logout {
-            text-align: right;
-            margin-top: 20px;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e9ecef 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        .logout a {
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ============================================
+           HEADER & NAVIGATION
+           ============================================ */
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 102, 204, 0.15);
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
             text-decoration: none;
-            color: #fff;
-            background: #0B1D51;
-            padding: 10px 20px;
-            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
-        .logout a:hover {
-            background-color: #092244;
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ============================================
+           PROFILE SECTION
+           ============================================ */
+
+        .profile-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            animation: slideInUp 0.6s ease-out;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .profile-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 16px rgba(0, 102, 204, 0.3);
+        }
+
+        .profile-info h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-id {
+            color: #666;
+            font-size: 0.9rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* ============================================
+           STATS CARDS
+           ============================================ */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 212, 255, 0.05));
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
+        }
+
+        .stat-value {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================
+           MATERIALS SECTION
+           ============================================ */
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-header h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-underline {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .material-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .material-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .material-icon {
+            font-size: 2.5rem;
+        }
+
+        .material-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .material-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .material-category {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.2), rgba(0, 212, 255, 0.2));
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        .material-link {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .material-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 102, 204, 0.3);
+        }
+
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h4 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #999;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+
+        footer {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #1a2332 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .profile-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .header-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="profile">
-        <div class="user-info">
-            <h2>Welcome, {{ student_name }}</h2>
-            <p><strong>User ID:</strong> {{ userid }}</p>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="header-content">
+                <h1>👨‍🎓 Student Dashboard</h1>
+                <p class="header-subtitle">KS Academy - Your Learning Portal</p>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
         </div>
-        <div class="logout">
-            <a href="{{ url_for('logout') }}">Logout</a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Profile Section -->
+        <section class="profile-section">
+            <div class="profile-content">
+                <div class="profile-avatar">👨‍🎓</div>
+                <div class="profile-info">
+                    <h2>Welcome, {{ student_name }}!</h2>
+                    <p class="profile-id">ID: {{ userid }}</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">📚</div>
+                    <div class="stat-label">Materials Available</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">⭐</div>
+                <div class="stat-label">Access Premium</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">🎯</div>
+                <div class="stat-label">Ready to Succeed</div>
+            </div>
         </div>
+
+        <!-- Study Materials Section -->
+        <section>
+            <div class="section-header">
+                <h3>
+                    <span>📚</span>
+                    Your Study Materials
+                </h3>
+                <div class="section-underline"></div>
+            </div>
+
+            {% if materials %}
+            <div class="materials-grid">
+                {% for mat in materials %}
+                <div class="material-card">
+                    <div class="material-icon">📄</div>
+                    <div>
+                        <h4 class="material-title">{{ mat[1] }}</h4>
+                        <p class="material-description">Essential study material for your exam preparation</p>
+                    </div>
+                    <div class="material-category">{{ mat[3] if mat|length > 3 else 'Study Material' }}</div>
+                    <a href="{{ mat[2] }}" target="_blank" class="material-link">
+                        🔗 Access Material
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <h4>No Materials Yet</h4>
+                <p>Your study materials will appear here. Check back soon!</p>
+            </div>
+            {% endif %}
+        </section>
+
     </div>
 
-    <h3>📚 Your Study Materials</h3>
-    {% if materials %}
-    <ul>
-        {% for mat in materials %}
-        <li>
-            <strong>{{ mat[1] }}</strong> –
-            <a href="{{ mat[2] }}" target="_blank">Download</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>No study materials available yet.</p>
-    {% endif %}
-    
-</div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 KS Academy. All rights reserved. | Exam Preparation Excellence</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Add smooth animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = entry.target.style.animation;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.material-card, .stat-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 
 </body>
 </html>

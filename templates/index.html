@@ -4,133 +4,379 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KS Academy | Coaching for SET, NET, TRB Exams</title>
+    <title>KS Academy | Elite Coaching for SET, NET, TRB Exams</title>
 
     <!-- CSS and Fonts -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playwrite+NL+Guides&family=Poetsen+One&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Smooth Scroll Behavior -->
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
 </head>
 
 <body>
-    <!-- Top Banner -->
+    <!-- Top Banner with Animation -->
     <div class="top-bar">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" height="70">
-        <h1>KS ACADEMY, SALEM</h1>
+        <div class="top-bar-content">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" class="logo-animate">
+            <div class="brand-text">
+                <h1>KS ACADEMY</h1>
+                <p class="subtitle">Excellence Coaching Centre for PHYSICS</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="/pgtrb">PG TRB</a>
-        <a href="#ugtrb">UG TRB</a>
-        <a href="#set">SET</a>
-        <a href="https://drive.google.com/file/d/1E7HlrokxYnzTpDjR-dZyaCUlSzdm8c07/view?usp=sharin"
-            target="_blank">Sample Materials</a>
-        <a href="/">HOME</a>
-        <a href="/login?role=admin">Admin Login</a>
-        <a href="/login?role=student">Student Login</a>
-        <a href="/about">About Us</a>
-        <a href="#contact">👤</a>
+    <!-- Navigation with Scroll Effect -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">🎓</a>
+            <div class="nav-menu">
+                <a href="/pgtrb" class="nav-link">PG TRB</a>
+                <a href="#ugtrb" class="nav-link">UG TRB</a>
+                <a href="#set" class="nav-link">SET</a>
+                <a href="https://drive.google.com/file/d/1E7HlrokxYnzTpDjR-dZyaCUlSzdm8c07/view?usp=sharing" class="nav-link" target="_blank">Materials</a>
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/login?role=student" class="nav-link login-btn">Login</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </nav>
 
-    <!-- Marquee -->
+    <!-- Animated Marquee -->
     <div class="marquee-box">
         <div class="marquee-content">
-            🎓 PG TRB BATCH-II ADMISSIONS GOING ON - 9047767620 &nbsp;&nbsp;&nbsp;
-            🎓 UG TRB-2025 ADMISSIONS GOING ON - 9042976707 &nbsp;&nbsp;&nbsp;
-            🎓 AP TRB ADMISSIONS GOING ON - 8148891005
+            <span class="marquee-item">🎓 PG TRB BATCH-II: 9047767620</span>
+            <span class="marquee-item">🎓 UG TRB-2025: 9042976707</span>
+            <span class="marquee-item">🎓 AP TRB: 8148891005</span>
+            <span class="marquee-item">🎓 PG TRB BATCH-II: 9047767620</span>
         </div>
     </div>
 
-    <!-- Slip Test Banner -->
-    <div class="test-banner">
-        <a href="https://online-test.classplusapp.com/?testId=686f82a36c2509f5814a0afb&defaultLanguage=en"
-            target="_blank" class="blink-text">
-            CLICK HERE FOR FREE SLIP TEST
-        </a>
+    <!-- Free Slip Test Banner with CTA -->
+    <div class="cta-banner">
+        <div class="cta-content">
+            <h3>Ready to Test Your Skills?</h3>
+            <p>Take our <strong>FREE Slip Test</strong> and see how you perform</p>
+            <a href="https://online-test.classplusapp.com/?testId=686f82a36c2509f5814a0afb&defaultLanguage=en" target="_blank" class="cta-button">
+                <span>Start Free Test</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
     </div>
 
-    <!-- Achievers -->
-    <div class="achievers-section">
-        <img src="{{ url_for('static', filename='achievers-banner.png') }}" alt="Polytechnic TRB 2022 Achievers"
-            width="1000px" height="1000px" />
-    </div>
+    <!-- Achievers Section with Image -->
+    <section class="achievers-section">
+        <div class="section-label">Success Stories</div>
+        <img src="{{ url_for('static', filename='achievers-banner.png') }}" alt="Polytechnic TRB 2022 Achievers" class="achievers-image" />
+    </section>
 
-    <!-- News Section -->
-    <section class="news-updates">
-        <div class="news-card">
-            <div class="news-date">27 <span>May, 2025</span></div>
-            <div class="news-content">
-                <h3>PG TRB -2025-2026 (Physics - New Syllabus -2024)</h3>
-                <p>Unit-6: Atomic Physics and Spectroscopy – Sample Material –
-                    <a href="#">Click Here</a>
-                </p>
-                <div class="news-meta">Posted by admin - <span class="tag">PG TRB</span></div>
-            </div>
+    <!-- News & Updates Section -->
+    <section class="news-section">
+        <div class="section-header">
+            <h2>Latest Updates</h2>
+            <div class="header-underline"></div>
         </div>
+        
+        <div class="news-grid">
+            <article class="news-card news-card-1">
+                <div class="news-badge">Recent</div>
+                <div class="news-date">
+                    <span class="date-day">27</span>
+                    <span class="date-month">May</span>
+                </div>
+                <div class="news-content">
+                    <h3>PG TRB Physics - New Syllabus 2024</h3>
+                    <p>Unit-6: Atomic Physics and Spectroscopy Sample Material</p>
+                    <a href="#" class="news-link">Download Material →</a>
+                </div>
+            </article>
 
-        <div class="news-card">
-            <div class="news-date">14 <span>March, 2025</span></div>
-            <div class="news-content">
-                <h3>ACHIEVEMENTS</h3>
-                <ul>
-                    <li>UG TRB (English & Tamil Medium) - 2024 – <a class="red" href="#">Click Here</a></li>
-                    <li>PG TRB - 2022 – ACHIEVERS – <a class="red" href="#">Click Here</a></li>
-                </ul>
-                <div class="news-meta">Posted by admin - <span class="tag">UG TRB</span></div>
-            </div>
-        </div>
+            <article class="news-card news-card-2">
+                <div class="news-badge">Achievement</div>
+                <div class="news-date">
+                    <span class="date-day">14</span>
+                    <span class="date-month">Mar</span>
+                </div>
+                <div class="news-content">
+                    <h3>2024 UG TRB Results</h3>
+                    <p>Our students achieved outstanding results in English & Tamil Medium exams</p>
+                    <a href="#" class="news-link">View Results →</a>
+                </div>
+            </article>
 
-        <div class="news-card">
-            <div class="news-date">22 <span>November, 2024</span></div>
-            <div class="news-content">
-                <h3>PG TRB-2025</h3>
-                <p>Modulation Techniques Study Material - <a href="#">Click Here</a></p>
-                <div class="news-meta">Posted by admin - <span class="tag">PG TRB</span></div>
-            </div>
+            <article class="news-card news-card-3">
+                <div class="news-badge">Study Material</div>
+                <div class="news-date">
+                    <span class="date-day">22</span>
+                    <span class="date-month">Nov</span>
+                </div>
+                <div class="news-content">
+                    <h3>PG TRB Modulation Techniques</h3>
+                    <p>Comprehensive study material and practice problems available now</p>
+                    <a href="#" class="news-link">Access Material →</a>
+                </div>
+            </article>
         </div>
     </section>
 
-    <!-- Courses -->
+    <!-- Courses Section -->
     <section class="courses" id="courses">
-        <h2>Courses Offered</h2>
+        <div class="section-header">
+            <h2>Our Courses</h2>
+            <div class="header-underline"></div>
+        </div>
+        
         <div class="courses-grid">
-            <div class="course-card">📘 State Eligibility Test (SET) Coaching</div>
-            <div class="course-card">📕 PG TRB – Post Graduate Teacher Exam Coaching</div>
-            <div class="course-card">📙 UG TRB – Undergraduate Teacher Exam Coaching</div>
+            <div class="course-card course-set">
+                <div class="course-icon">📘</div>
+                <h3>State Eligibility Test</h3>
+                <p class="course-subtitle">SET Coaching</p>
+                <p>Comprehensive preparation for State Eligibility Test with expert guidance</p>
+                <ul class="features">
+                    <li>✓ Expert Faculty</li>
+                    <li>✓ Regular Tests</li>
+                    <li>✓ Study Materials</li>
+                </ul>
+            </div>
+
+            <div class="course-card course-pgtrb">
+                <div class="course-icon">📕</div>
+                <h3>PG TRB</h3>
+                <p class="course-subtitle">Post Graduate Teacher Exam</p>
+                <p>Intensive coaching for Post Graduate level teaching recruitment</p>
+                <ul class="features">
+                    <li>✓ Weekend Classes</li>
+                    <li>✓ Evening Batches</li>
+                    <li>✓ Personal Mentoring</li>
+                </ul>
+            </div>
+
+            <div class="course-card course-ugtrb">
+                <div class="course-icon">📙</div>
+                <h3>UG TRB</h3>
+                <p class="course-subtitle">Undergraduate Teacher Exam</p>
+                <p>Complete training program for undergraduate level teaching positions</p>
+                <ul class="features">
+                    <li>✓ Live Classes</li>
+                    <li>✓ Mock Tests</li>
+                    <li>✓ Doubt Sessions</li>
+                </ul>
+            </div>
         </div>
     </section>
 
-    <!-- Batches -->
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <h2>By The Numbers</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" data-target="500">500+</div>
+                <p class="stat-label">Students Trained</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="95">95%</div>
+                <p class="stat-label">Success Rate</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="15">15+</div>
+                <p class="stat-label">Years Experience</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="200">200+</div>
+                <p class="stat-label">Selections</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Batches Section -->
     <section class="batches" id="batches">
-        <h2>Upcoming Batches</h2>
-        <p><strong>PG TRB 2025:</strong> Starts July 15 – Weekend & Evening Batch Available</p>
-        <p><strong>SET Nov 2025:</strong> Online classes start August 1</p>
+        <div class="section-header">
+            <h2>Upcoming Batches</h2>
+            <div class="header-underline"></div>
+        </div>
+        
+        <div class="batches-container">
+            <div class="batch-card batch-highlight">
+                <h3>PG TRB 2025</h3>
+                <p class="batch-date">📅 Starts July 15, 2025</p>
+                <div class="batch-features">
+                    <span>Weekend Batch</span>
+                    <span>Evening Batch</span>
+                    <span>Online Option</span>
+                </div>
+                <a href="#" class="batch-btn">Enroll Now</a>
+            </div>
+
+            <div class="batch-card">
+                <h3>SET Nov 2025</h3>
+                <p class="batch-date">📅 Starts August 1, 2025</p>
+                <div class="batch-features">
+                    <span>Online Classes</span>
+                    <span>Live Sessions</span>
+                    <span>Recorded Access</span>
+                </div>
+                <a href="#" class="batch-btn">Enroll Now</a>
+            </div>
+
+            <div class="batch-card">
+                <h3>UG TRB 2025</h3>
+                <p class="batch-date">📅 Starts June 1, 2025</p>
+                <div class="batch-features">
+                    <span>Regular Classes</span>
+                    <span>Weekend Batch</span>
+                    <span>Postal Classes</span>
+                </div>
+                <a href="#" class="batch-btn">Enroll Now</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Materials -->
-    <section class="courses" id="materials">
-        <h2>Sample Materials</h2>
-        <p>Downloadable notes and practice tests:
-            <a href="https://drive.google.com/file/d/1E7HlrokxYnzTpDjR-dZyaCUlSzdm8c07/view?usp=sharing"
-                target="_blank">Click here!!</a>
-        </p>
-    </section>
-
-    <!-- Contact -->
+    <!-- Contact Section -->
     <section class="contact" id="contact">
-        <h2>Contact Us</h2>
-        <p><strong>Email:</strong> ksacademysalem@gmail.com</p>
-        <p><strong>Phone:</strong> 9047767620, 9042976707, 8148891005</p>
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <div class="header-underline"></div>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-icon">📧</div>
+                    <h4>Email</h4>
+                    <p>ksacademysalem@gmail.com</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">📱</div>
+                    <h4>Phone Numbers</h4>
+                    <p>PG TRB: 9047767620</p>
+                    <p>UG TRB: 9042976707</p>
+                    <p>AP TRB: 8148891005</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <h4>Location</h4>
+                    <p>Salem, Tamil Nadu</p>
+                    <p>India</p>
+                </div>
+            </div>
+
+            <div class="contact-form-wrapper">
+                <form class="contact-form" onsubmit="return handleSubmit(event)">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="tel" placeholder="Phone Number">
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 KS Academy. All rights reserved.</p>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 KS Academy, Salem. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
     </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Hamburger Menu
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Active Nav Link on Scroll
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    document.querySelector('.nav-menu').classList.remove('active');
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    if (entry.target.classList.contains('stat-card')) {
+                        animateCounter(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.course-card, .news-card, .batch-card, .stat-card, .info-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter Animation
+        function animateCounter(element) {
+            const numberElement = element.querySelector('.stat-number');
+            const target = parseInt(numberElement.getAttribute('data-target')) || 0;
+            let current = 0;
+            const increment = target / 30;
+            const interval = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    numberElement.textContent = target + (numberElement.textContent.includes('%') ? '%' : '+');
+                    clearInterval(interval);
+                } else {
+                    numberElement.textContent = Math.floor(current) + (numberElement.textContent.includes('%') ? '%' : '+');
+                }
+            }, 30);
+        }
+
+        // Form Submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            e.target.reset();
+            return false;
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 
 </html>

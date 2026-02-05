@@ -2,83 +2,407 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | KS Academy</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --accent: #00d4ff;
+            --secondary: #ff6b35;
+            --text-dark: #1a1a2e;
+            --text-light: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f7f9fb;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+            animation: slideInUp 0.8s ease-out;
         }
 
         .login-container {
-            background: white;
-            padding: 2rem 3rem;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .login-container h2 {
+        /* ============================================
+           HEADER
+           ============================================ */
+
+        .login-header {
             text-align: center;
-            color: #0B1D51;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .login-header h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           FORM ELEMENTS
+           ============================================ */
+
+        .form-group {
             margin-bottom: 1.5rem;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin-top: 1rem;
-            font-weight: 500;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        input, select {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 0.6rem;
-            margin-top: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
-        button {
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+
+        .login-btn {
             width: 100%;
-            margin-top: 1.5rem;
-            padding: 0.7rem;
-            background-color: #0B1D51;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            border-radius: 5px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        button:hover {
-            background-color: #233a7a;
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           ROLE TABS
+           ============================================ */
+
+        .role-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .role-tab {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .role-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .role-tab.active {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 212, 255, 0.1));
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ============================================
+           FOOTER LINK
+           ============================================ */
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-footer a:hover {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           DECORATIVE ELEMENTS
+           ============================================ */
+
+        .floating-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: #0066cc;
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: #00d4ff;
+            border-radius: 50%;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 1s;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .role-tabs {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>KS Academy Login</h2>
-        <form method="POST">
-            <label for="role">Select Role</label>
-            <select name="role" id="role">
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-            </select>
 
-            <label for="userid">User ID</label>
-            <input type="text" name="userid" id="userid" required>
-
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-
-            <button type="submit">Login</button>
-        </form>
+    <!-- Floating Shapes Background -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
+
+    <!-- Login Container -->
+    <div class="login-wrapper">
+        <div class="login-container">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="logo">🎓</div>
+                <h1>KS Academy</h1>
+                <p>Excellence in Exam Preparation</p>
+            </div>
+
+            <!-- Login Form -->
+            <form method="POST">
+                <!-- Role Selection -->
+                <div class="form-group">
+                    <label>Select Your Role</label>
+                    <div class="role-tabs">
+                        <label class="role-tab active">
+                            <input type="radio" name="role" value="student" checked>
+                            👨‍🎓 Student
+                        </label>
+                        <label class="role-tab">
+                            <input type="radio" name="role" value="admin">
+                            👨‍💼 Admin
+                        </label>
+                    </div>
+                </div>
+
+                <!-- User ID -->
+                <div class="form-group">
+                    <label for="userid">User ID</label>
+                    <input 
+                        type="text" 
+                        id="userid" 
+                        name="userid" 
+                        placeholder="Enter your user ID" 
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-btn">Login to Your Account</button>
+            </form>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>Don't have an account? <a href="/">Contact Admin</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Role Tab Switching
+        const roleRadios = document.querySelectorAll('input[name="role"]');
+        const roleTabs = document.querySelectorAll('.role-tab');
+
+        roleRadios.forEach((radio, index) => {
+            radio.addEventListener('change', () => {
+                roleTabs.forEach(tab => tab.classList.remove('active'));
+                roleTabs[index].classList.add('active');
+            });
+        });
+
+        // Add smooth focus effect
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
 </body>
 </html>

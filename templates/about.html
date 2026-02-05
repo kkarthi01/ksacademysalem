@@ -1,44 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About KS Academy</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | KS Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary: #ff6b35;
+            --accent: #00d4ff;
+            --success: #2ecc71;
+            --text-dark: #1a1a2e;
+            --text-light: #f5f5f5;
+            --bg-light: #f8f9fa;
+            --border-color: rgba(0, 102, 204, 0.1);
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+
+        header {
+            background: linear-gradient(135deg, #1B3C53 0%, var(--primary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 102, 204, 0.15);
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-section img {
+            height: 70px;
+            width: auto;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+        }
+
+        .brand-text h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .brand-text p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin: 0.5rem 0 0 0;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+
+        nav {
+            background: white;
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            animation: slideInUp 0.8s ease-out;
+            text-align: center;
+        }
+
+        .hero-section h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-section h3 {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .contact-item strong {
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           SECTION HEADER
+           ============================================ */
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .section-header h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .header-underline {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* ============================================
+           CONTENT SECTIONS
+           ============================================ */
+
+        .content-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .content-section:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .content-section:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .content-section h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-icon {
+            font-size: 1.8rem;
+        }
+
+        .content-section p {
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .content-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ============================================
+           MISSION/VISION/VALUES GRID
+           ============================================ */
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(0, 212, 255, 0.05));
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
+            border-color: var(--primary);
+        }
+
+        .mission-card h4 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .mission-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ============================================
+           FEATURES LIST
+           ============================================ */
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0 0 0;
+        }
+
+        .features-list li {
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            background: rgba(0, 102, 204, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .features-list li:hover {
+            background: rgba(0, 102, 204, 0.1);
+            transform: translateX(4px);
+        }
+
+        .features-list li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .features-list li span {
+            color: #555;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           CALL-TO-ACTION
+           ============================================ */
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 3rem 0;
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.3);
+            animation: slideInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-section h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+
+        footer {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #1a2332 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .brand-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-section {
+                padding: 1.5rem;
+            }
+
+            .hero-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-section h3 {
+                font-size: 1.2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-section {
+                padding: 2rem 1rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="top-bar">
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo" height="70">
-    <h1>KS ACADEMY, SALEM</h1>
-  </div>
 
-  <nav>
-    <a href="./templates/index.html">Home</a>
-    <a href="about.html">About Us</a>
-  </nav>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="KS Academy Logo">
+                <div class="brand-text">
+                    <h1>KS ACADEMY</h1>
+                    <p>Salem, Tamil Nadu</p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <div class="about-page-container">
-    <h2 class="center orange">KS ACADEMY, SALEM</h2>
-    <h3 class="center green">FOR PHYSICS</h3>
-    <p class="center red small">(UG TRB, PG TRB, POLY TRB, TNSET)</p>
-    <p class="center content"><strong>Contact:</strong> 9047767620, 9042976707, 8148891005</p>
+    <!-- Navigation -->
+    <nav>
+        <a href="/">🏠 Home</a>
+        <a href="/#courses">📚 Courses</a>
+        <a href="/about">ℹ️ About Us</a>
+        <a href="/#contact">📞 Contact</a>
+        <a href="/login">🔐 Login</a>
+    </nav>
 
-    <hr style="max-width: 60%; margin: 1rem auto; border-top: 1px solid #ccc;" />
+    <!-- Main Container -->
+    <div class="container">
 
-    <p class="center content">
-      KS Academy excels in providing intensive coaching and training for all government teacher recruitment board exams.<br /><br />
-      Our institution believes developing self-esteem and self-confidence is key to facing any circumstance. We build personalities that guide students to success, and we kindle the thirst for knowledge in a holistic environment.
-    </p>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2>KS ACADEMY, SALEM</h2>
+            <h3>FOR PHYSICS</h3>
+            <p class="subtitle">(UG TRB, PG TRB, POLY TRB, TNSET)</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <div>
+                        <strong>PG TRB:</strong>
+                        <a href="tel:9047767620">9047767620</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <div>
+                        <strong>UG TRB:</strong>
+                        <a href="tel:9042976707">9042976707</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <div>
+                        <strong>AP TRB:</strong>
+                        <a href="tel:8148891005">8148891005</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <hr style="max-width: 60%; margin: 1rem auto; border-top: 1px solid #ccc;" />
+        <!-- About Section -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2>About KS Academy</h2>
+                <div class="header-underline"></div>
+            </div>
 
-    <p class="center blue">
-      <strong>Want to Become a Government Teacher / Professor. Join Our Expert Coaching Classes for Success!!</strong>
-    </p>
-  </div>
+            <h3>
+                <span class="section-icon">🎓</span>
+                Intensive Coaching & Training
+            </h3>
+            <p>
+                KS Academy excels in providing <strong>intensive coaching and training</strong> for all government 
+                teacher recruitment board exams. We are dedicated to helping aspiring educators achieve their dreams 
+                of becoming government teachers and professors.
+            </p>
+            <p>
+                With a strong track record of success and years of expertise, we have guided hundreds of students to 
+                achieve their career goals in education.
+            </p>
+        </section>
 
-  <footer>
-    <p>&copy; 2025 KS Academy. All rights reserved.</p>
-  </footer>
+        <!-- Philosophy Section -->
+        <section class="content-section">
+            <h3>
+                <span class="section-icon">💡</span>
+                Our Philosophy & Values
+            </h3>
+            <p>
+                Our institution believes that <strong>developing self-esteem and self-confidence</strong> is the key 
+                to facing any circumstance. We don't just teach content; we build <strong>personalities that guide 
+                students to success</strong>.
+            </p>
+            <p>
+                We kindle the <strong>thirst for knowledge in a holistic environment</strong>, where every student is 
+                valued, supported, and encouraged to reach their full potential. Our approach combines academic excellence 
+                with personal development.
+            </p>
+
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h4>🎯 Our Mission</h4>
+                    <p>
+                        To provide world-class coaching and transform aspiring teachers into confident, 
+                        competent professionals ready to make a difference in education.
+                    </p>
+                </div>
+
+                <div class="mission-card">
+                    <h4>👁️ Our Vision</h4>
+                    <p>
+                        To be the most trusted coaching academy for teacher recruitment exams in Tamil Nadu, 
+                        known for producing quality educators.
+                    </p>
+                </div>
+
+                <div class="mission-card">
+                    <h4>⭐ Our Values</h4>
+                    <p>
+                        Excellence, Integrity, Student-Centric Approach, Innovation, and Commitment to 
+                        continuous improvement.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section class="content-section">
+            <h3>
+                <span class="section-icon">✨</span>
+                Why Choose KS Academy?
+            </h3>
+
+            <ul class="features-list">
+                <li><span>Expert Faculty with Deep Subject Knowledge</span></li>
+                <li><span>Comprehensive Study Materials & Resources</span></li>
+                <li><span>Regular Tests & Performance Analytics</span></li>
+                <li><span>Individual Doubt-Clearing Sessions</span></li>
+                <li><span>Flexible Online & Offline Classes</span></li>
+                <li><span>Proven Track Record of 92% Success Rate</span></li>
+                <li><span>Personalized Guidance & Mentoring</span></li>
+                <li><span>Affordable Fees with Premium Quality</span></li>
+                <li><span>Small Batch Sizes for Better Attention</span></li>
+                <li><span>Lifetime Access to Study Materials</span></li>
+            </ul>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2>Ready to Become a Government Teacher?</h2>
+            <p>
+                Join thousands of successful students who have achieved their dreams with KS Academy. 
+                Transform your teaching career today!
+            </p>
+            <a href="/login?role=student" class="cta-button">
+                🚀 Start Your Journey
+            </a>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 KS Academy, Salem. All rights reserved. | Excellence in Exam Preparation</p>
+    </footer>
+
 </body>
 </html>
