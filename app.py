@@ -20,7 +20,7 @@ def login():
         userid = request.form['userid']
         password = request.form['password']
 
-        if role == 'admin' and userid == 'KSAcademySalem' and password == 'KS!Academy$123':
+        if role == 'admin' and userid == 'KSAcademySalem' and password == 'KS!Academy$4510$':
             session['user'] = 'admin'
             return redirect('/admin')
         elif role == 'student':
